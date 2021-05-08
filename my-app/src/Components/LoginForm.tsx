@@ -1,8 +1,8 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { emailValidator, Required, composeValidators } from '../validators/validators';
 import { connect } from 'react-redux';
-import { ActionTypes, Actions } from '../Redux/AuthReduser';
+import { login } from '../Redux/AuthReduser';
 import Preloader from './common/preloader';
 import { AppStateType } from '../Redux/ReduxStore'
 
@@ -16,7 +16,7 @@ const Login: React.FC<MapStateType & MapDispatchType> = (props) => {
 const LoginForm: React.FC<MapStateType & MapDispatchType> = (props) => (
   <Form
     onSubmit={values => {
-      props.fetchUser(values.email, values.password, values.rememberMe, undefined);
+      props.login(values.email, values.password, values.rememberMe, values.captcha);
     }}
     render={({ handleSubmit, form, submitting, pristine, submitError }) => (
       <form onSubmit={handleSubmit}>
@@ -61,15 +61,6 @@ const MapStateToProps = (state : AppStateType) => {
   }
 }
 
-const MapDispatchToProps = (dispatch: Dispatch<ActionTypes>) => {
-  return {
-    
-  }
-}
-
-export default connect<MapStateType, MapDispatchType, undefined, AppStateType>
-(MapStateToProps, MapDispatchToProps)(Login)
-
 type MapStateType = {
   email: string | null
   isAuth: boolean
@@ -77,5 +68,9 @@ type MapStateType = {
 }
 
 type MapDispatchType = {  
-  fetchUser: (email: string, password: string, rememberMe: boolean, captch: string | undefined) => void
+  login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
 }
+
+
+export default connect<MapStateType, MapDispatchType, undefined, AppStateType>
+(MapStateToProps, { login })(Login)

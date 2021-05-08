@@ -55,11 +55,11 @@ export const authentification = (): BaseThunkType<ActionTypes> => async (dispatc
 }
 
 export const login =
- (email: string, password: string, rememberMe: boolean, captcha: string): BaseThunkType<ActionTypes> =>
+ (email: string, password: string, rememberMe: boolean, captcha: string ): BaseThunkType<ActionTypes> =>
     async (dispatch: any) => {
         dispatch(Actions.fetchingInProgress());
         const data = await authAPI.login(email, password, rememberMe, captcha);
-        dispatch(Actions.fetchingSuccess);
+        dispatch(Actions.fetchingSuccess());
         if(data.resultCode === ResultCode.Success) {
             dispatch(authentification());
         }
