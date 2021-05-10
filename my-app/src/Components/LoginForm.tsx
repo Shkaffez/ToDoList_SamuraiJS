@@ -4,7 +4,10 @@ import { emailValidator, Required, composeValidators } from '../validators/valid
 import { connect } from 'react-redux';
 import { login } from '../Redux/AuthReduser';
 import Preloader from './common/preloader';
-import { AppStateType } from '../Redux/ReduxStore'
+import { AppStateType } from '../Redux/ReduxStore';
+import { FORM_ERROR } from 'final-form';
+import { Button } from 'antd';
+import "antd/dist/antd.css";
 
 const Login: React.FC<MapStateType & MapDispatchType> = (props) => {
   if(props.fetchingInProgress) {
@@ -17,6 +20,7 @@ const LoginForm: React.FC<MapStateType & MapDispatchType> = (props) => (
   <Form
     onSubmit={values => {
       props.login(values.email, values.password, values.rememberMe, values.captcha);
+      return { [FORM_ERROR]: props.loginError }
     }}
     render={({ handleSubmit, form, submitting, pristine, submitError }) => (
       <form onSubmit={handleSubmit}>
@@ -41,13 +45,19 @@ const LoginForm: React.FC<MapStateType & MapDispatchType> = (props) => (
             </div>
           )}
         </Field>
+        
+        {submitError && <div>{submitError}</div>}
 
         <label>Remember Me</label>
         <Field name="rememberMe" component="input" type="checkbox" />
 
-        <button type="submit" disabled={submitting || pristine}>submit</button>
-        <button type="button" onClick={form.reset} disabled={submitting || pristine}>reset</button>
+        <Button type="primary" style={{ margin: 8 }} onClick={form.submit} disabled={submitting || pristine}>submit</Button>
+        <Button type="default" onClick={form.reset} disabled={submitting || pristine}>reset</Button>
 
+        {props.captchaUrl ? <img src={props.captchaUrl.toString()} alt="captcha" /> : undefined}
+        {props.captchaUrl ? <div>
+          <Field name="captcha" component="input" type="text" />symbols from image
+        </div> : undefined}
       </form>
     )}
   />
@@ -57,7 +67,9 @@ const MapStateToProps = (state : AppStateType) => {
   return {
     fetchingInProgress: state.auth.fetchingInProgress,
     email: state.auth.email,
-    isAuth: state.auth.isAuth  
+    isAuth: state.auth.isAuth,
+    loginError: state.auth.loginError,
+    captchaUrl: state.auth.captchaUrl,
   }
 }
 
@@ -65,6 +77,8 @@ type MapStateType = {
   email: string | null
   isAuth: boolean
   fetchingInProgress: boolean
+  loginError: string | null
+  captchaUrl: string | null
 }
 
 type MapDispatchType = {  

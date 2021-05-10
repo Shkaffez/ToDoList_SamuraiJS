@@ -13,7 +13,7 @@ export const Actions = {
     fetchingSuccess: () => ( {type: 'AUTH/FETCHING_SUCCESS'} as const),
     fetchUser: (email: string, password: string, rememberMe: boolean, captch: string | undefined) => 
         ( {type: 'AUTH/FETCH_USER', payload: { email, password, rememberMe, captch}} as const),
-    getCaptchaUrlSuccess: (captchURL: string) => ( {type: 'AUTH/GET_CAPTCHA_URL_SUCCESS', payload: {captchURL}} as const ),
+    getCaptchaUrlSuccess: (captchaUrl: string) => ( {type: 'AUTH/GET_CAPTCHA_URL_SUCCESS', payload: {captchaUrl}} as const ),
     setLoginError: (loginError: string) => ( {type: 'AUTH/SET_LOGIN_ERROR', payload: { loginError }} as const)
 }
 
@@ -59,15 +59,16 @@ export const login =
     async (dispatch: any) => {
         dispatch(Actions.fetchingInProgress());
         const data = await authAPI.login(email, password, rememberMe, captcha);
+       
         dispatch(Actions.fetchingSuccess());
         if(data.resultCode === ResultCode.Success) {
             dispatch(authentification());
         }
         else {
             if(data.resultCode === ResultCode.CaptchIsRequired) {
-                dispatch(getCaptchaUrl);
-            } 
-            const message = data.message.length > 0 ? data.message[0] : "login error";
+                dispatch(getCaptchaUrl());
+            }             
+            const message = data.messages.length > 0 ? data.messages[0] : "login error";
             dispatch(Actions.setLoginError(message));
 
         }
@@ -76,7 +77,7 @@ export const login =
 
 export const getCaptchaUrl = (): BaseThunkType<ActionTypes> => async (dispatch: any) => {
     const data = await securityAPI.getCaptchUrl();
-    const captchaURL = data;
+    const captchaURL = data.url;       
     dispatch(Actions.getCaptchaUrlSuccess(captchaURL));
 }
 

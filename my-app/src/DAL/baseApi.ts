@@ -17,7 +17,7 @@ export enum ResultCode  {
 
 export type CommonResponseType = {
     resultCode: ResultCode
-    message: Array<string>
+    messages: Array<string>
     data: {}
 }
 
