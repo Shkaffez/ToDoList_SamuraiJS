@@ -22,12 +22,32 @@ export const todoListsAPI = {
             .then(res => res.data);
     },
 
-    getTasks(todolistId: number,count: number, page: number) {
+    getTasks(todolistId: number, count: number, page: number) {
         return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks?count=${count}&page=${page}`)
         .then(res => res.data);
-    }
+    }, 
 
+    createTask(todolistId: number, title: string) {
+        return instance.post<CreateTasksResponseType>(`/todo-lists/${todolistId}/tasks`, title)
+        .then(res => res.data);
+    },
+
+    updateTask(todolistId: number, taskId: number, updatedTask: UpdatedTaskType) {
+        return instance.put<CreateTasksResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, updatedTask)
+        .then(res => res.data);
+    },
+
+    deleteTask(todolistId: number, taskId: number) {
+        return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
+        .then(res => res.data);
+    },
+
+    reorderTasks(todolistId: number, taskId: number, putAfterItemId: number = 0) {
+        return instance.put<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}/reorder`, putAfterItemId)
+        .then(res => res.data);
+    }, 
 }
+
 
 
 
@@ -52,24 +72,42 @@ type CreateTodoListResponseType = {
     }
 }
 
+type TaskType = {
+    description: string
+    title: string
+    completed:boolean
+    status: number
+    priority: number
+    startDate: Date
+    deadline: Date
+    id: string
+    todoListId: string
+    order: number
+    addedDate: Date
+}
+
 type GetTasksResponseType = {
     items: {
-        Task: {
-            description: string
-            title: string
-            completed:boolean
-            status: number
-            priority: number
-            startDate: number
-            deadline: Date
-            id: string
-            todoListId: string
-            order: number
-            addedDate: number
-        }
+        Task: TaskType
     }
     totalCount: number
-    error: string
-    
-    
+    error: string 
+}
+
+type CreateTasksResponseType = {
+    items: {
+        Task: TaskType
+    }
+    resultCode: number
+    messages: Array<string>
+}
+
+type UpdatedTaskType = {
+    title: string,
+    description: string,
+    completed: boolean,
+    status: number,
+    priority: number,
+    startDate: Date,
+    deadline: Date,
 }
