@@ -1,6 +1,7 @@
 import { Action, applyMiddleware, combineReducers, createStore } from "redux";
 import authReduser from "./AuthReduser";
 import ReduxThunk, { ThunkAction } from "redux-thunk";
+import todoListReduser from "./TodoListReduser";
 
 
 
@@ -8,7 +9,8 @@ import ReduxThunk, { ThunkAction } from "redux-thunk";
 
 
 const rootReduser = combineReducers({
-    auth: authReduser
+    auth: authReduser,
+    todoLists: todoListReduser
 });
 
 type RootReduserType = typeof rootReduser;

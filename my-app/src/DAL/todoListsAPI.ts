@@ -2,57 +2,57 @@ import { instance, CommonResponseType, ResultCode } from './baseApi';
 
 export const todoListsAPI = {
     getAllTodoLists() {
-        return instance.get<GetAllListsResponseType>('todo-lists').then(res => res.data);
+        return instance.get<Array<TodoListType>>('todo-lists').then(res => res.data);
     },
 
     createTodoList(title : string) {
         return instance.post<CreateTodoListResponseType>('todo-lists', title).then(res => res.data);
     },
 
-    deleteTodoList(todolistId: number) {
+    deleteTodoList(todolistId: string) {
         return instance.delete<CommonResponseType>(`todo-lists/${todolistId}`).then(res => res.data);
     },
 
-    updateTodoListTitle(todolistId: number, title: string) {
+    updateTodoListTitle(todolistId: string, title: string) {
         return instance.put<CommonResponseType>(`todo-lists/${todolistId}`, title).then(res => res.data);
     },
 
-    reorderTodoList(todolistId: number, putAfterItemId: number = 0) {
+    reorderTodoList(todolistId: string, putAfterItemId: number = 0) {
         return instance.put<CommonResponseType>(`todo-lists/${todolistId}/reorder`, putAfterItemId)
             .then(res => res.data);
     },
 
-    getTasks(todolistId: number, count: number, page: number) {
+    getTasks(todolistId: string, count: number, page: number) {
         return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks?count=${count}&page=${page}`)
         .then(res => res.data);
-    }, 
+    },
 
-    createTask(todolistId: number, title: string) {
+    createTask(todolistId: string, title: string) {
         return instance.post<CreateTasksResponseType>(`/todo-lists/${todolistId}/tasks`, title)
         .then(res => res.data);
     },
 
-    updateTask(todolistId: number, taskId: number, updatedTask: UpdatedTaskType) {
+    updateTask(todolistId: string, taskId: number, updatedTask: UpdatedTaskType) {
         return instance.put<CreateTasksResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, updatedTask)
         .then(res => res.data);
     },
 
-    deleteTask(todolistId: number, taskId: number) {
+    deleteTask(todolistId: string, taskId: number) {
         return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
         .then(res => res.data);
     },
 
-    reorderTasks(todolistId: number, taskId: number, putAfterItemId: number = 0) {
+    reorderTasks(todolistId: string, taskId: number, putAfterItemId: number = 0) {
         return instance.put<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}/reorder`, putAfterItemId)
         .then(res => res.data);
-    }, 
+    },
 }
 
 
 
 
 
-type GetAllListsResponseType = {
+export type TodoListType = {
     id: string
     addedDate: Date
     order: number
@@ -63,12 +63,7 @@ type CreateTodoListResponseType = {
     resultCode: ResultCode
     messages: Array<string>
     data: {
-        item: {
-            id: string
-            title: string
-            addedDate: Date
-            order: number
-        }
+        item: TodoListType
     }
 }
 
@@ -91,7 +86,7 @@ type GetTasksResponseType = {
         Task: TaskType
     }
     totalCount: number
-    error: string 
+    error: string
 }
 
 type CreateTasksResponseType = {
