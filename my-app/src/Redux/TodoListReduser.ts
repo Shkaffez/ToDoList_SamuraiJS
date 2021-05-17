@@ -6,8 +6,8 @@ import { TodoListType } from "../DAL/todoListsAPI";
 export const Actions = {
     setTodoLists: (todoLists: Array<TodoListType>) => 
     ( {type: 'TODOLISTS/SET_TODOLISTS', payload: {todoLists}} as const),
-    setCurrentList: (todoListId: string) =>
-     ( {type: 'TODOLISTS/SET_CURRENT_TODOLIST', payload: { todoListId }} as const),
+    setCurrentList: (todoListNumber: number) =>
+     ( {type: 'TODOLISTS/SET_CURRENT_TODOLIST',  todoListNumber } as const),
     addTodoList: (todoList: TodoListType) => 
     ( {type: 'TODOLISTS/ADD_TODOLIST',   todoList} as const),
     fetchingInProgress: () => ( {type: 'TODOLISTS/FETCHING_IN_PROGRESS'} as const),
@@ -17,7 +17,26 @@ export const Actions = {
 
 
 const initialState = {
-    todoLists : [] as Array<TodoListType>,
+    todoLists : [
+        {
+            title: "Первый тудуЛист",
+            id: "csdsfsf",
+            addedDate: new Date(),
+            order: 0,
+        },        
+        {
+            title: "Второй тудуЛист",
+            id: "ggfsgsfg",
+            addedDate: new Date(),
+            order: 1,
+        },
+        {
+            title: "Третий тудуЛист",
+            id: "sfsgfad",
+            addedDate: new Date(),
+            order: 2,
+        }
+    ] as Array<TodoListType>,
     currentList: 0,
     fetchingInProgress: false,
 }
@@ -27,9 +46,12 @@ const initialState = {
 const todoListReduser = (state = initialState, action: ActionTypes) : InitialStateType => {
     switch(action.type) {
         case 'TODOLISTS/SET_TODOLISTS':
-        case 'TODOLISTS/SET_CURRENT_TODOLIST':
             return {
                 ...state, ...action.payload
+            }
+        case 'TODOLISTS/SET_CURRENT_TODOLIST':
+            return {
+                ...state, currentList: action.todoListNumber
             }
         case 'TODOLISTS/ADD_TODOLIST':
             return {
@@ -41,6 +63,8 @@ const todoListReduser = (state = initialState, action: ActionTypes) : InitialSta
         case 'TODOLISTS/FETCHING_SUCCESS': return {
             ...state, fetchingInProgress: false
         }
+        default: return state            
+        
             
     }
 }

@@ -67,7 +67,7 @@ type CreateTodoListResponseType = {
     }
 }
 
-type TaskType = {
+export type TaskType = {
     description: string
     title: string
     completed:boolean

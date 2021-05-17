@@ -2,6 +2,7 @@ import { Action, applyMiddleware, combineReducers, createStore } from "redux";
 import authReduser from "./AuthReduser";
 import ReduxThunk, { ThunkAction } from "redux-thunk";
 import todoListReduser from "./TodoListReduser";
+import tasksReduser from "./TasksReduser"
 
 
 
@@ -10,7 +11,8 @@ import todoListReduser from "./TodoListReduser";
 
 const rootReduser = combineReducers({
     auth: authReduser,
-    todoLists: todoListReduser
+    todoLists: todoListReduser,
+    tasks: tasksReduser,
 });
 
 type RootReduserType = typeof rootReduser;
