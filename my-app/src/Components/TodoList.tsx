@@ -8,7 +8,7 @@ const TodoList : React.FC<MapStatePropsType> = (props) => {
     let todoListElement = props.todoLists.map(todoList => (
         <div>
             <h2>{todoList.title}</h2>
-            <h3>Дана создания: {todoList.addedDate}</h3>
+            <h3>Дата создания: {todoList.addedDate}</h3>
             <Tasks />
         </div>
     ))

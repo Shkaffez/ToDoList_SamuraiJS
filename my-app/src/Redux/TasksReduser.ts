@@ -6,7 +6,9 @@ const Actions = {
     setTasks: (tasks: Array<TaskType>) => 
     ( {type: 'TASKS/SET_TASKS', payload: {tasks}} as const),
     setCurrentTask: (task: number) =>
-     ( {type: 'TASKS/SET_CURRENT_TASL',  task } as const),
+     ( {type: 'TASKS/SET_CURRENT_TASK',  task } as const),
+    addTask: (task: TaskType) => 
+    ( {type: 'TASKS/ADD_TASK', task} as const )
 }
 
 
@@ -62,6 +64,16 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
                 ...state, ...action.payload
             }
         }
+        case "TASKS/SET_CURRENT_TASK": {
+            return {
+                ...state, currentTask: action.task
+            }
+        }
+        case "TASKS/ADD_TASK": {
+            return {
+                ...state, tasks: [...state.tasks, action.task]
+            }
+        }        
         default: return state
     }    
 }
