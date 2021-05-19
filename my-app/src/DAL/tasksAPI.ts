@@ -1,4 +1,4 @@
-import { instance, CommonResponseType, ResultCode } from './baseApi';
+import { instance, CommonResponseType } from './baseApi';
 
 
 export const tasksAPI = {
@@ -34,12 +34,12 @@ export type TaskType = {
     completed:boolean
     status: number
     priority: number
-    startDate: Date
-    deadline: Date
+    startDate: Date | string
+    deadline: Date | string
     id: string
     todoListId: string
     order: number
-    addedDate: Date
+    addedDate: Date | string
 }
 
 type GetTasksResponseType = {
@@ -64,6 +64,6 @@ type UpdatedTaskType = {
     completed: boolean,
     status: number,
     priority: number,
-    startDate: Date,
-    deadline: Date,
+    startDate: Date | string,
+    deadline: Date | string,
 }

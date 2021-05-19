@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TaskType } from '../DAL/todoListsAPI';
+import { TaskType } from '../DAL/tasksAPI';
 import { AppStateType } from '../Redux/ReduxStore';
 import Task from './Task';
 
-const Tasks : React.FC<MapStatePropsType> = (props) => {
+const Tasks : React.FC<MapStatePropsType & OwnPropsType> = (props) => {
     
-    let taskElements = props.tasks.map(task => <Task key={task.id} title={task.title} 
-        description={task.description} startDate={task.startDate}  deadline={task.deadline}
+    let taskElements = props.tasks
+    .filter(task => task.todoListId === props.todoListID)
+    .map(task => <Task key={task.id} title={task.title} description={task.description}
+        startDate={task.startDate.toString()}  deadline={task.deadline.toString()}
         priority={task.priority}  completed={task.completed} />)
 
     return (
@@ -25,7 +27,11 @@ const mapStateToProps = (state: AppStateType) : MapStatePropsType => ({
 });
 
 type MapStatePropsType = {
-    tasks: Array<TaskType>
+    tasks: Array<TaskType>    
 }
 
-export default connect(mapStateToProps)(Tasks);
+type OwnPropsType = {
+    todoListID: string
+}
+
+export default connect<MapStatePropsType, undefined, OwnPropsType, AppStateType>(mapStateToProps)(Tasks);

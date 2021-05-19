@@ -19,8 +19,8 @@ export default Task;
 type MapStatePropsType = {
     title: string
     description: string
-    startDate: Date
-    deadline: Date
+    startDate: Date | string
+    deadline: Date | string
     priority: number
     completed: boolean
 }

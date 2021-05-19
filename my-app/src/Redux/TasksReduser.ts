@@ -1,4 +1,4 @@
-import { TaskType } from "../DAL/todoListsAPI";
+import { TaskType } from "../DAL/tasksAPI";
 import { InferActionTypes } from "./ReduxStore";
 
 
@@ -20,12 +20,12 @@ const initialState ={
             completed: false,
             status: 0,
             priority: 1,
-            startDate: new Date(),
-            deadline: new Date(2021, 8, 24),
+            startDate: new Date() as Date | string,
+            deadline: new Date(2021, 8, 24) as Date | string,
             id: "vdvsd1v",
-            todoListId: "string",
+            todoListId: "csdsfsf",
             order: 0,
-            addedDate: new Date(),
+            addedDate: new Date() as Date | string,
         },
         {
             description: "Lorem dkssvdsfagdgdka",
@@ -33,12 +33,12 @@ const initialState ={
             completed: false,
             status: 0,
             priority: 1,
-            startDate: new Date(),
-            deadline: new Date(2021, 8, 24),
+            startDate: new Date() as Date | string,
+            deadline: new Date(2021, 8, 24) as Date | string,
             id: "vdvsddv",
-            todoListId: "string",
+            todoListId: "ggfsgsfg",
             order: 1,
-            addedDate: new Date(),
+            addedDate: new Date() as Date | string,
         },
         {
             description: "Lorem dksasdasddadadsafsffadka",
@@ -46,12 +46,12 @@ const initialState ={
             completed: true,
             status: 0,
             priority: 3,
-            startDate: new Date(),
-            deadline: new Date(2021, 8, 24),
+            startDate: new Date() as Date | string,
+            deadline: new Date(2021, 8, 24) as Date | string,
             id: "vdvsd32v",
-            todoListId: "string",
+            todoListId: "sfsgfad",
             order: 2,
-            addedDate: new Date(),
+            addedDate: new Date() as Date | string,
         },
     ] as Array<TaskType>,
     currentTask: 0   
