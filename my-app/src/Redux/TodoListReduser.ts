@@ -77,6 +77,11 @@ export const loadTodoLists = (): BaseThunkType<ActionTypes> => async (dispatch: 
     dispatch(Actions.setTodoLists(data));
 }
 
+export const createTodoList = (todoListTitle: string): BaseThunkType<ActionTypes> => async (dispatch: any) => {
+    const data = await todoListsAPI.createTodoList(todoListTitle);
+    dispatch(Actions.addTodoList(data.data.item));
+}
+
 
 
 

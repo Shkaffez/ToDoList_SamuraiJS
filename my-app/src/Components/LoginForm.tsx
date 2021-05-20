@@ -8,8 +8,12 @@ import { AppStateType } from '../Redux/ReduxStore';
 import { FORM_ERROR } from 'final-form';
 import { Button } from 'antd';
 import "antd/dist/antd.css";
+import { Redirect } from 'react-router';
 
 const Login: React.FC<MapStateType & MapDispatchType> = (props) => {
+  if(props.isAuth) {
+    return <Redirect to="/main" />;
+  }
   if(props.fetchingInProgress) {
     return <Preloader />
   }
