@@ -18,24 +18,24 @@ export const Actions = {
 
 const initialState = {
     todoLists : [
-        {
-            title: "Первый тудуЛист",
-            id: "csdsfsf",
-            addedDate: new Date(),
-            order: 0,
-        },        
-        {
-            title: "Второй тудуЛист",
-            id: "ggfsgsfg",
-            addedDate: new Date(),
-            order: 1,
-        },
-        {
-            title: "Третий тудуЛист",
-            id: "sfsgfad",
-            addedDate: new Date(),
-            order: 2,
-        }
+        // {
+        //     title: "Первый тудуЛист",
+        //     id: "csdsfsf",
+        //     addedDate: new Date(),
+        //     order: 0,
+        // },        
+        // {
+        //     title: "Второй тудуЛист",
+        //     id: "ggfsgsfg",
+        //     addedDate: new Date(),
+        //     order: 1,
+        // },
+        // {
+        //     title: "Третий тудуЛист",
+        //     id: "sfsgfad",
+        //     addedDate: new Date(),
+        //     order: 2,
+        // }
     ] as Array<TodoListType>,
     currentList: 0,
     fetchingInProgress: false,
@@ -70,14 +70,14 @@ const todoListReduser = (state = initialState, action: ActionTypes) : InitialSta
 }
 
 
-export const loadTodoLists = (): BaseThunkType<ActionTypes> => async (dispatch: any) => {
+export const loadTodoLists = (): BaseThunkType<ActionTypes> => async (dispatch) => {
     dispatch(Actions.fetchingInProgress());
     const data = await todoListsAPI.getAllTodoLists();
     dispatch(Actions.fetchingSuccess());    
     dispatch(Actions.setTodoLists(data));
 }
 
-export const createTodoList = (todoListTitle: string): BaseThunkType<ActionTypes> => async (dispatch: any) => {
+export const createTodoList = (todoListTitle: string): BaseThunkType<ActionTypes> => async (dispatch) => {
     const data = await todoListsAPI.createTodoList(todoListTitle);
     dispatch(Actions.addTodoList(data.data.item));
 }

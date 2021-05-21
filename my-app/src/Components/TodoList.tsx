@@ -1,17 +1,15 @@
-import React, { Dispatch } from 'react';
 import { Field, Form } from 'react-final-form';
 import { connect } from 'react-redux';
-import { Action } from 'redux';
 import { TodoListType } from '../DAL/todoListsAPI';
 import { AppStateType } from '../Redux/ReduxStore';
-import { createTodoList } from '../Redux/TodoListReduser';
+import { ActionTypes, createTodoList } from '../Redux/TodoListReduser';
 import Tasks from './Tasks';
 
 const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
     let todoListElement = props.todoLists.map(todoList => (
-        <div>
+        <div key={todoList.id}>            
             <h2>{todoList.title}</h2>
-            <h3>Дата создания: {todoList.addedDate.toDateString()}</h3>
+            <h3>Дата создания: {todoList.addedDate}</h3>
             <Tasks todoListID={todoList.id} />
         </div>
     ))
@@ -20,7 +18,8 @@ const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) =>
         <div>
             {todoListElement}
             <Form
-                onSubmit={props.createTodoList}
+                onSubmit={values => props.createTodoList(values.input)}
+                    
                 render={({ handleSubmit }) =>(
                     <form onSubmit={handleSubmit}>
                         <Field name="input" component="input" type="text" />
@@ -49,7 +48,7 @@ type MapStatePropsType = {
 }
 
 type MapDispatchPropsType = {
-    createTodoList: (title: string) => void
+    createTodoList: (title: string) => ActionTypes;
 }
 
 export default connect<MapStatePropsType, MapDispatchPropsType, undefined, AppStateType>
