@@ -17,26 +17,7 @@ export const Actions = {
 
 
 const initialState = {
-    todoLists : [
-        // {
-        //     title: "Первый тудуЛист",
-        //     id: "csdsfsf",
-        //     addedDate: new Date(),
-        //     order: 0,
-        // },        
-        // {
-        //     title: "Второй тудуЛист",
-        //     id: "ggfsgsfg",
-        //     addedDate: new Date(),
-        //     order: 1,
-        // },
-        // {
-        //     title: "Третий тудуЛист",
-        //     id: "sfsgfad",
-        //     addedDate: new Date(),
-        //     order: 2,
-        // }
-    ] as Array<TodoListType>,
+    todoLists : [] as Array<TodoListType>,
     currentList: 0,
     fetchingInProgress: false,
 }

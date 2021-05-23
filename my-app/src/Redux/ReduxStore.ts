@@ -3,6 +3,7 @@ import authReduser from "./AuthReduser";
 import ReduxThunk, { ThunkAction } from "redux-thunk";
 import todoListReduser from "./TodoListReduser";
 import tasksReduser from "./TasksReduser"
+import appReduser from "./AppReduser";
 
 
 
@@ -13,6 +14,7 @@ const rootReduser = combineReducers({
     auth: authReduser,
     todoLists: todoListReduser,
     tasks: tasksReduser,
+    app: appReduser,
 });
 
 type RootReduserType = typeof rootReduser;

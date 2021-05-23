@@ -46,7 +46,7 @@ const authReduser = (state = initialState, action: ActionTypes) : InitialStateTy
     }
 }
 
-export const authentification = (): BaseThunkType<ActionTypes> => async (dispatch: any) => {
+export const authentication = (): BaseThunkType<ActionTypes> => async (dispatch: any) => {
     const data = await authAPI.authMe();
     if(data.resultCode === ResultCode.Success) {
         const { id, email, login } = data.data;
@@ -62,7 +62,7 @@ export const login =
        
         dispatch(Actions.fetchingSuccess());
         if(data.resultCode === ResultCode.Success) {
-            dispatch(authentification());
+            dispatch(authentication());
         }
         else {
             if(data.resultCode === ResultCode.CaptchIsRequired) {
