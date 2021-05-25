@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Field, Form } from 'react-final-form';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
@@ -7,42 +6,49 @@ import { AppStateType } from '../Redux/ReduxStore';
 import { ActionTypes, createTodoList, loadTodoLists } from '../Redux/TodoListReduser';
 import Tasks from './Tasks';
 
+import { Row, Col } from 'antd';
+
 const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
     if(!props.isAuth) {
         return <Redirect to="/login" />;
-    }  
-    const loadLists = () => {
-        props.loadTodoLists();
     }
-    useEffect(() =>{loadLists()}, [])
+
+   
     
     
-    let todoListElement = props.todoLists.filter(todoList => todoList.order === props.currentList)
+    let todoListElement = props.todoLists
+    // .filter(todoList => todoList.order === props.currentList)
                                          .map(todoList => (
-        <div key={todoList.id}>            
-            <h2>{todoList.title}</h2>
-            <h3>Дата создания: {todoList.addedDate}</h3>
-            <Tasks todoListID={todoList.id} />
-        </div>
+        
+            <Col key={todoList.id}>            
+                <h2>{todoList.title}</h2>
+                <h3>Дата создания: {todoList.addedDate}</h3>
+                <Tasks todoListID={todoList.id} />
+            </Col>
+        
     ))
 
     return (
         <div>
+            <Row justify={'space-around'}>
             {todoListElement}
-            <Form
-                onSubmit={values => props.createTodoList(values.input)}
-                    
-                render={({ handleSubmit }) =>(
-                    <form onSubmit={handleSubmit}>
-                        <Field name="input" component="input" type="text" />
-                        <button>submit</button> 
-                    </form>
-                    
-                )}
-            />
-
-
+            </Row>                
+            <Row justify="center">
+                <Form
+                    onSubmit={values => props.createTodoList(values.input)}
+                        
+                    render={({ handleSubmit }) =>(
+                        <form onSubmit={handleSubmit}>
+                            <Field name="input" component="input" type="text" />
+                            <button>submit</button> 
+                        </form>
+                        
+                    )}
+                />
+            </Row>          
         </div>
+
+
     )
 }
 

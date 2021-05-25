@@ -1,5 +1,6 @@
 import { authentication } from "./AuthReduser";
 import { InferActionTypes } from "./ReduxStore";
+import { loadTodoLists } from "./TodoListReduser";
 
 
 const INITIALIZED_SUCCSESS = 'INITIALIZED_SUCCSESS';
@@ -34,6 +35,7 @@ const appReduser = (state = initialState, action : ActionsType) : InitialStateTy
 
 export const initializeApp  = () => (dispatch : any) => {
     let promise =  dispatch(authentication());
+    dispatch(loadTodoLists());
 
     promise.then(() => {
       dispatch(Actions.initializedSuccsess());

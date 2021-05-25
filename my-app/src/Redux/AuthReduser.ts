@@ -2,6 +2,7 @@ import { ResultCode } from '../DAL/baseApi';
 import { securityAPI } from '../DAL/securityAPI';
 import { authAPI } from './../DAL/authAPI';
 import { InferActionTypes, BaseThunkType } from './ReduxStore';
+import { loadTodoLists } from './TodoListReduser';
 
 
 
@@ -59,6 +60,7 @@ export const login =
     async (dispatch: any) => {
         dispatch(Actions.fetchingInProgress());
         const data = await authAPI.login(email, password, rememberMe, captcha);
+        await dispatch(loadTodoLists());
        
         dispatch(Actions.fetchingSuccess());
         if(data.resultCode === ResultCode.Success) {
