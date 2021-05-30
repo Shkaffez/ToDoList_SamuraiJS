@@ -12,10 +12,6 @@ const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) =>
     if(!props.isAuth) {
         return <Redirect to="/login" />;
     }
-
-   
-    
-    
     let todoListElement = props.todoLists
     // .filter(todoList => todoList.order === props.currentList)
                                          .map(todoList => (
@@ -26,8 +22,7 @@ const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) =>
                 <Tasks todoListID={todoList.id} />
             </Col>
         
-    ))
-
+    ))    
     return (
         <div>
             <Row justify={'space-around'}>
@@ -41,8 +36,7 @@ const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) =>
                         <form onSubmit={handleSubmit}>
                             <Field name="input" component="input" type="text" />
                             <button>submit</button> 
-                        </form>
-                        
+                        </form>                        
                     )}
                 />
             </Row>          

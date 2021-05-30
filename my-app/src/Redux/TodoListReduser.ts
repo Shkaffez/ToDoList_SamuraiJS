@@ -43,6 +43,20 @@ const todoListReduser = (state = initialState, action: ActionTypes) : InitialSta
         case 'TODOLISTS/REMOVE_TODOLIST': return {
             ...state, todoLists: state.todoLists.filter(todoList => todoList.id !== action.todoListId)
         }
+        case 'TODOLISTS/UPDATE_TITLE': 
+        let todoList = state.todoLists.find(todoList => todoList.id === action.payload.todolistId);
+        if(!todoList) {
+            return {
+                ...state
+            } 
+        }
+        if(todoList) {
+            todoList.title = action.payload.title;
+        }
+        return {
+            ...state, todoLists: [...state.todoLists
+                    .filter(todoList => todoList.id !== action.payload.todolistId), todoList]
+        }
         case 'TODOLISTS/FETCHING_IN_PROGRESS': return {
             ...state, fetchingInProgress: true
         }
@@ -87,7 +101,7 @@ export const updateTodoList = (todolistId: string, title: string): BaseThunkType
     async (dispatch) => {
     const data = await todoListsAPI.updateTodoListTitle(todolistId, title);
     if(data.resultCode === ResultCode.Success) {
-        dispatch(Actions.removeTodoList(todoListId));
+        dispatch(Actions.updateTitle(todolistId, title));
     }
     else if(data.resultCode === ResultCode.Error) {
         alert(data.messages[0]);

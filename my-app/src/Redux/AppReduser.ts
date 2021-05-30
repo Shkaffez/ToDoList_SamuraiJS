@@ -35,7 +35,7 @@ const appReduser = (state = initialState, action : ActionsType) : InitialStateTy
 
 export const initializeApp  = () => (dispatch : any) => {
     let promise =  dispatch(authentication());
-    dispatch(loadTodoLists());
+    dispatch(loadTodoLists());  
 
     promise.then(() => {
       dispatch(Actions.initializedSuccsess());
