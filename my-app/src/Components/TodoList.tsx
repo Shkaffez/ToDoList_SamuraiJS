@@ -13,12 +13,11 @@ const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) =>
         return <Redirect to="/login" />;
     }
     let todoListElement = props.todoLists
-    // .filter(todoList => todoList.order === props.currentList)
+                                         .filter(todoList => todoList.id === props.currentList)
                                          .map(todoList => (
-        
             <Col key={todoList.id}>            
-                <h2>{todoList.title}</h2>
-                <h3>Дата создания: {todoList.addedDate}</h3>
+                <h2>Название: {todoList.title}</h2>
+                <h3>Дата создания: {new Date(todoList.addedDate).toLocaleString()}</h3>
                 <Tasks todoListID={todoList.id} />
             </Col>
         
@@ -34,7 +33,8 @@ const TodoList : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) =>
                         
                     render={({ handleSubmit }) =>(
                         <form onSubmit={handleSubmit}>
-                            <Field name="input" component="input" type="text" />
+                            <label><h2>Добавить Todo List</h2></label>
+                            <Field name="input" component="input" type="text" placeholder="название" />
                             <button>submit</button> 
                         </form>                        
                     )}
@@ -62,7 +62,7 @@ const mapDispatchToProps = (dispatch: any) => {
 type MapStatePropsType = {
     todoLists: Array<TodoListType>
     isAuth: boolean
-    currentList: number
+    currentList: string
 }
 
 type MapDispatchPropsType = {

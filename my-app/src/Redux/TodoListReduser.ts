@@ -9,8 +9,8 @@ export const Actions = {
     fetchingSuccess: () => ( {type: 'TODOLISTS/FETCHING_SUCCESS'} as const),
     setTodoLists: (todoLists: Array<TodoListType>) => 
     ( {type: 'TODOLISTS/SET_TODOLISTS', payload: {todoLists}} as const),
-    setCurrentList: (todoListNumber: number) =>
-     ( {type: 'TODOLISTS/SET_CURRENT_TODOLIST',  todoListNumber } as const),
+    setCurrentList: (todoListId: string) =>
+     ( {type: 'TODOLISTS/SET_CURRENT_TODOLIST',  todoListId } as const),
     addTodoList: (todoList: TodoListType) => 
     ( {type: 'TODOLISTS/ADD_TODOLIST',   todoList} as const),
     removeTodoList: (todoListId: string) => 
@@ -23,7 +23,7 @@ export const Actions = {
 
 const initialState = {
     todoLists : [] as Array<TodoListType>,
-    currentList: 0,
+    currentList: "",
     fetchingInProgress: false,
 }
 
@@ -35,7 +35,7 @@ const todoListReduser = (state = initialState, action: ActionTypes) : InitialSta
                 ...state, ...action.payload
             }
         case 'TODOLISTS/SET_CURRENT_TODOLIST': return {
-                ...state, currentList: action.todoListNumber
+                ...state, currentList: action.todoListId
             }
         case 'TODOLISTS/ADD_TODOLIST': return {
                 ...state, todoLists: [...state.todoLists, action.todoList]
