@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 import Login from './Components/LoginForm';
 import TodoList from './Components/TodoList';
 import { initializeApp } from './Redux/AppReduser'
@@ -21,6 +21,7 @@ const App = (props) => {
       {/* <Route exact path="/" render={()=> {<Redirect to="/main"/>}}/> */}
       <Route path="/login" render={()=><Login />} />
       <Route path="/main" render={()=><TodoList />} />
+      <Route exect path="/" render={()=><Redirect to= "/main"/>} />
     </Switch>
     </div>
   )

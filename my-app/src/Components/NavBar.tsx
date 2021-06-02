@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TodoListType } from '../DAL/todoListsAPI';
 import { AppStateType } from '../Redux/ReduxStore';
-import { Actions, ActionTypes } from '../Redux/TodoListReduser';
+import { Actions, ActionTypes, deleteTodoList } from '../Redux/TodoListReduser';
 
 
 
@@ -27,7 +27,8 @@ const mapStateToProps = (state: AppStateType) : MapStatePropsType => ({
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-      setCurrentList: (todoListId: string) => dispatch(Actions.setCurrentList(todoListId)),      
+      setCurrentList: (todoListId: string) => dispatch(Actions.setCurrentList(todoListId)),
+      deleteTodoList: (todoListId: string)=> dispatch(deleteTodoList),      
   }
 }
 
@@ -37,6 +38,7 @@ type MapStatePropsType = {
 
 type MapDispatchPropsType = {
   setCurrentList: (todoListId: string) => ActionTypes
+  deleteTodoList: (todoListId: string) => ActionTypes
   
 }
 

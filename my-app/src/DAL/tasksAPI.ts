@@ -1,4 +1,4 @@
-import { instance, CommonResponseType } from './baseApi';
+import { instance, CommonResponseType, ResultCode } from './baseApi';
 
 
 export const tasksAPI = {
@@ -8,7 +8,7 @@ export const tasksAPI = {
     },
     
     createTask(todolistId: string, title: string) {
-        return instance.post<CreateTasksResponseType>(`/todo-lists/${todolistId}/tasks`, title)
+        return instance.post<CreateTasksResponseType>(`/todo-lists/${todolistId}/tasks`, {title: title})
         .then(res => res.data);
     },
     
@@ -43,18 +43,14 @@ export type TaskType = {
 }
 
 type GetTasksResponseType = {
-    items: {
-        Task: TaskType
-    }
+    item: TaskType    
     totalCount: number
     error: string
 }
 
 type CreateTasksResponseType = {
-    items: {
-        Task: TaskType
-    }
-    resultCode: number
+    item: TaskType 
+    resultCode: ResultCode
     messages: Array<string>
 }
 

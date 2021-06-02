@@ -1,5 +1,6 @@
-import { TaskType } from "../DAL/tasksAPI";
-import { InferActionTypes } from "./ReduxStore";
+import { ResultCode } from "../DAL/baseApi";
+import { tasksAPI, TaskType } from "../DAL/tasksAPI";
+import { BaseThunkType, InferActionTypes } from "./ReduxStore";
 
 
 const Actions = {
@@ -13,47 +14,7 @@ const Actions = {
 
 
 const initialState ={
-    tasks: [
-        {
-            description: "Lorem dksdka",
-            title: "title",
-            completed: false,
-            status: 0,
-            priority: 1,
-            startDate: new Date() as Date | string,
-            deadline: new Date(2021, 8, 24) as Date | string,
-            id: "vdvsd1v",
-            todoListId: "csdsfsf",
-            order: 0,
-            addedDate: new Date() as Date | string,
-        },
-        {
-            description: "Lorem dkssvdsfagdgdka",
-            title: "title2",
-            completed: false,
-            status: 0,
-            priority: 1,
-            startDate: new Date() as Date | string,
-            deadline: new Date(2021, 8, 24) as Date | string,
-            id: "vdvsddv",
-            todoListId: "ggfsgsfg",
-            order: 1,
-            addedDate: new Date() as Date | string,
-        },
-        {
-            description: "Lorem dksasdasddadadsafsffadka",
-            title: "title3",
-            completed: true,
-            status: 0,
-            priority: 3,
-            startDate: new Date() as Date | string,
-            deadline: new Date(2021, 8, 24) as Date | string,
-            id: "vdvsd32v",
-            todoListId: "sfsgfad",
-            order: 2,
-            addedDate: new Date() as Date | string,
-        },
-    ] as Array<TaskType>,
+    tasks: [] as Array<TaskType>,
     currentTask: 0   
 }
 
@@ -78,7 +39,15 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
     }    
 }
 
+export const createTask = (todolistId: string, title: string):BaseThunkType<ActionTypes> => async (dispatch) => {
+    const data = await tasksAPI.createTask(todolistId, title);
+    if(data.resultCode === ResultCode.Success) {
+        dispatch(Actions.addTask(data.item))
+    } else if (data.resultCode === ResultCode.Error) {
+        alert(data.messages[0]);
+    }
 
+}
 
 export default tasksReduser;
 

@@ -8,7 +8,7 @@ const Task : React.FC<MapStatePropsType> = (props) => {
             <p>Дата начала: {props.startDate}</p>
             <p>Закончит до: {props.deadline}</p>
             <p>Приоритет: {props.priority}</p>
-            <p>{props.completed ? "DONE" : "In progress"}</p>
+            <p>Статус выполнения: {props.completed ? "DONE" : "In progress"}</p>
         </div>   
     )
 }
