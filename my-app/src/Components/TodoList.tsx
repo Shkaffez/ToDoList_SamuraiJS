@@ -7,12 +7,16 @@ import { ActionTypes, createTodoList, loadTodoLists } from '../Redux/TodoListRed
 import Tasks from './Tasks';
 
 import { Row, Col } from 'antd';
-import { createTask } from '../Redux/TasksReduser';
+import { createTask, getAllTasks } from '../Redux/TasksReduser';
+import { useEffect } from 'react';
 
 const TodoList: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
     if (!props.isAuth) {
         return <Redirect to="/login" />;
-    }
+    }    
+    // eslint-disable-next-line
+    useEffect(() => {props.getAllTasks(props.currentList)}, []); 
+    
     let todoListElement = props.todoLists
         .filter(todoList => todoList.id === props.currentList)
         .map(todoList => (
@@ -72,6 +76,7 @@ const mapDispatchToProps = (dispatch: any) => {
         createTodoList: (todoListTitle: string) => dispatch(createTodoList(todoListTitle)),
         loadTodoLists: () => dispatch(loadTodoLists()),
         createTask: (todolistId: string, taskTitle: string) => dispatch(createTask(todolistId, taskTitle)),
+        getAllTasks: (todoListId: string) => dispatch(getAllTasks)
     }
 }
 
@@ -85,6 +90,7 @@ type MapDispatchPropsType = {
     createTodoList: (todoListTitle: string) => ActionTypes
     loadTodoLists: () => ActionTypes
     createTask: (todolistId: string, taskTitle: string) => ActionTypes
+    getAllTasks: (todoListId: string) => ActionTypes
 }
 
 export default connect<MapStatePropsType, MapDispatchPropsType, undefined, AppStateType>

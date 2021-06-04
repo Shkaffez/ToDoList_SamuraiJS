@@ -2,7 +2,7 @@ import { instance, CommonResponseType, ResultCode } from './baseApi';
 
 
 export const tasksAPI = {
-    getTasks(todolistId: string, count: number, page: number) {
+    getTasks(todolistId: string, count: number = 10, page: number = 1) {
         return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks?count=${count}&page=${page}`)
         .then(res => res.data);
     },
@@ -42,14 +42,15 @@ export type TaskType = {
     addedDate: Date | string
 }
 
-type GetTasksResponseType = {
-    item: TaskType    
+type GetTasksResponseType = {    
+    items: Array<TaskType>    
     totalCount: number
     error: string
 }
 
 type CreateTasksResponseType = {
-    item: TaskType 
+    data: {item: TaskType}
+    fieldsErrors: Array<string>
     resultCode: ResultCode
     messages: Array<string>
 }

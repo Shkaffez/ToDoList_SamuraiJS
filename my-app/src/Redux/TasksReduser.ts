@@ -39,10 +39,19 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
     }    
 }
 
+export const getAllTasks = (todolistId: string):BaseThunkType<ActionTypes> => async (dispatch) => {
+    const data = await tasksAPI.getTasks(todolistId);    
+    if(!data.error) {
+        dispatch(Actions.setTasks(data.items))
+    } else if (data.error) {
+        alert(data.error);
+    }
+}
+
 export const createTask = (todolistId: string, title: string):BaseThunkType<ActionTypes> => async (dispatch) => {
-    const data = await tasksAPI.createTask(todolistId, title);
+    const data = await tasksAPI.createTask(todolistId, title);    
     if(data.resultCode === ResultCode.Success) {
-        dispatch(Actions.addTask(data.item))
+        dispatch(Actions.addTask(data.data.item))
     } else if (data.resultCode === ResultCode.Error) {
         alert(data.messages[0]);
     }

@@ -9,6 +9,9 @@ import { Actions, ActionTypes, deleteTodoList } from '../Redux/TodoListReduser';
 
 
 const NavBar : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
+  
+  
+  
   let todoListElement = props.todoLists.map(todoList => (
     <Menu.Item key={todoList.id} onClick={(e) =>{props.setCurrentList(e.key.toString())}}>
           {todoList.title}
@@ -28,7 +31,8 @@ const mapStateToProps = (state: AppStateType) : MapStatePropsType => ({
 const mapDispatchToProps = (dispatch: any) => {
   return {
       setCurrentList: (todoListId: string) => dispatch(Actions.setCurrentList(todoListId)),
-      deleteTodoList: (todoListId: string)=> dispatch(deleteTodoList),      
+      deleteTodoList: (todoListId: string)=> dispatch(deleteTodoList), 
+           
   }
 }
 
@@ -39,6 +43,7 @@ type MapStatePropsType = {
 type MapDispatchPropsType = {
   setCurrentList: (todoListId: string) => ActionTypes
   deleteTodoList: (todoListId: string) => ActionTypes
+  
   
 }
 
