@@ -8,14 +8,13 @@ import Tasks from './Tasks';
 
 import { Row, Col } from 'antd';
 import { createTask, getAllTasks } from '../Redux/TasksReduser';
-import { useEffect } from 'react';
+
 
 const TodoList: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
     if (!props.isAuth) {
         return <Redirect to="/login" />;
     }    
-    // eslint-disable-next-line
-    useEffect(() => {props.getAllTasks(props.currentList)}, []); 
+    
     
     let todoListElement = props.todoLists
         .filter(todoList => todoList.id === props.currentList)
@@ -23,7 +22,7 @@ const TodoList: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => 
             <Col key={todoList.id}>
                 <h2>Название: {todoList.title}</h2>
                 <h3>Дата создания: {new Date(todoList.addedDate).toLocaleString()}</h3>
-                <Tasks todoListID={todoList.id} />
+                <Tasks />
             </Col>
 
         ))
@@ -76,7 +75,7 @@ const mapDispatchToProps = (dispatch: any) => {
         createTodoList: (todoListTitle: string) => dispatch(createTodoList(todoListTitle)),
         loadTodoLists: () => dispatch(loadTodoLists()),
         createTask: (todolistId: string, taskTitle: string) => dispatch(createTask(todolistId, taskTitle)),
-        getAllTasks: (todoListId: string) => dispatch(getAllTasks)
+        getAllTasks: (todoListId: string) => dispatch(getAllTasks(todoListId))
     }
 }
 

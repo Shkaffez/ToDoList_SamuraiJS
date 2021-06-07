@@ -9,13 +9,16 @@ const Actions = {
     setCurrentTask: (task: number) =>
      ( {type: 'TASKS/SET_CURRENT_TASK',  task } as const),
     addTask: (task: TaskType) => 
-    ( {type: 'TASKS/ADD_TASK', task} as const )
+    ( {type: 'TASKS/ADD_TASK', task} as const),
+    setTasksRecived: (todoListId: string) => 
+    ( {type: 'TASKS/SET_TASKS_RECIVED', todoListId} as const)
 }
 
 
 const initialState ={
     tasks: [] as Array<TaskType>,
-    currentTask: 0   
+    currentTask: 0,
+    isTasksRecived: [] as Array<string> // Array of TodoListsID, whose tasks recived
 }
 
 const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateType => {
@@ -34,7 +37,13 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
             return {
                 ...state, tasks: [...state.tasks, action.task]
             }
-        }        
+        }     
+        case "TASKS/SET_TASKS_RECIVED": {
+            return {
+                ...state, isTasksRecived: state.isTasksRecived.includes(action.todoListId)
+                    ? state.isTasksRecived : [...state.isTasksRecived, action.todoListId]
+            }
+        }   
         default: return state
     }    
 }
@@ -42,7 +51,9 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
 export const getAllTasks = (todolistId: string):BaseThunkType<ActionTypes> => async (dispatch) => {
     const data = await tasksAPI.getTasks(todolistId);    
     if(!data.error) {
-        dispatch(Actions.setTasks(data.items))
+        dispatch(Actions.setTasksRecived(todolistId));
+        dispatch(Actions.setTasks(data.items));
+        console.log("сработала санка")
     } else if (data.error) {
         alert(data.error);
     }

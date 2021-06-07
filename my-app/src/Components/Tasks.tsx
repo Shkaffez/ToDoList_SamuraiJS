@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { TaskType } from '../DAL/tasksAPI';
 import { AppStateType } from '../Redux/ReduxStore';
 import { ActionTypes, getAllTasks } from '../Redux/TasksReduser';
 import Task from './Task';
 
-const Tasks : React.FC<MapStatePropsType & OwnPropsType & MapDispatchPropsType> = (props) => {
-    // eslint-disable-next-line
-    useEffect(() => {props.getAllTasks(props.currentList)}, []); 
+const Tasks : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
+    // // eslint-disable-next-line
+    // useEffect(() => {props.getAllTasks(props.currentList)}, []); 
+
+    if(!props.isTasksRecived.includes(props.currentList)) {
+        props.getAllTasks(props.currentList)
+    }
+
     let taskElements = props.tasks
-    .filter(task => task.todoListId === props.todoListID)
+    .filter(task => task.todoListId === props.currentList)
     .map(task => <Task key={task.id} title={task.title} description={task.description}
         startDate={task.startDate}  deadline={task.deadline}
         priority={task.priority}  completed={task.completed} />)
@@ -27,26 +32,24 @@ const Tasks : React.FC<MapStatePropsType & OwnPropsType & MapDispatchPropsType> 
 const mapStateToProps = (state: AppStateType) : MapStatePropsType => ({
     tasks: state.tasks.tasks,
     currentList: state.todoLists.currentList,
+    isTasksRecived: state.tasks.isTasksRecived,
 });
 
 type MapStatePropsType = {
     tasks: Array<TaskType>   
     currentList: string 
+    isTasksRecived: Array<string>
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        
         getAllTasks: (todoListId: string) => dispatch(getAllTasks(todoListId))
     }
 }
 
-type OwnPropsType = {
-    todoListID: string
-}
+
 type MapDispatchPropsType = {
-    
     getAllTasks: (todoListId: string) => ActionTypes
 }
 
-export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, mapDispatchToProps)(Tasks);
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(Tasks);
