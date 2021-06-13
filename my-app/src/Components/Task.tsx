@@ -1,8 +1,9 @@
 import React from 'react';
+import styles from './Tasks.module.css'
 
 const Task : React.FC<MapStatePropsType> = (props) => {
     return (
-        <div>
+        <div className={styles.task}>
             <h2>{props.title}</h2>
             <p>{props.description}</p>
             <p>Дата начала: {props.startDate}</p>

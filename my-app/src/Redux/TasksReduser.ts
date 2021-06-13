@@ -3,9 +3,9 @@ import { tasksAPI, TaskType } from "../DAL/tasksAPI";
 import { BaseThunkType, InferActionTypes } from "./ReduxStore";
 
 
-const Actions = {
+export const Actions = {
     setTasks: (tasks: Array<TaskType>) => 
-    ( {type: 'TASKS/SET_TASKS', payload: {tasks}} as const),
+    ( {type: 'TASKS/SET_TASKS', tasks} as const),
     setCurrentTask: (task: number) =>
      ( {type: 'TASKS/SET_CURRENT_TASK',  task } as const),
     addTask: (task: TaskType) => 
@@ -25,7 +25,7 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
     switch(action.type){
         case "TASKS/SET_TASKS": {
             return {
-                ...state, ...action.payload
+                ...state, tasks: [...state.tasks, ...action.tasks]
             }
         }
         case "TASKS/SET_CURRENT_TASK": {
@@ -40,8 +40,7 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
         }     
         case "TASKS/SET_TASKS_RECIVED": {
             return {
-                ...state, isTasksRecived: state.isTasksRecived.includes(action.todoListId)
-                    ? state.isTasksRecived : [...state.isTasksRecived, action.todoListId]
+                ...state, isTasksRecived: [...state.isTasksRecived, action.todoListId]
             }
         }   
         default: return state
@@ -51,9 +50,7 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
 export const getAllTasks = (todolistId: string):BaseThunkType<ActionTypes> => async (dispatch) => {
     const data = await tasksAPI.getTasks(todolistId);    
     if(!data.error) {
-        dispatch(Actions.setTasksRecived(todolistId));
         dispatch(Actions.setTasks(data.items));
-        console.log("сработала санка")
     } else if (data.error) {
         alert(data.error);
     }

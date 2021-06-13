@@ -1,59 +1,81 @@
-import { Field, Form } from 'react-final-form';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
-import { TodoListType } from '../DAL/todoListsAPI';
+import { Field, Form } from 'react-final-form';
+import { Row, Col, Button, Input, Tooltip } from 'antd';
+import { CloseOutlined } from '@ant-design/icons'
+
 import { AppStateType } from '../Redux/ReduxStore';
-import { ActionTypes, createTodoList, loadTodoLists } from '../Redux/TodoListReduser';
+import { createTask } from '../Redux/TasksReduser';
+import { createTodoList } from '../Redux/TodoListReduser';
 import Tasks from './Tasks';
-
-import { Row, Col } from 'antd';
-import { createTask, getAllTasks } from '../Redux/TasksReduser';
+import style from './TodoList.module.css'
 
 
-const TodoList: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
-    if (!props.isAuth) {
+const TodoList: React.FC = (props) => {
+
+    const dispatch = useDispatch();
+    const todoLists = useSelector((state: AppStateType) => state.todoLists.todoLists);
+    const isAuth = useSelector((state: AppStateType) => state.auth.isAuth);
+    const currentList = useSelector((state: AppStateType) => state.todoLists.currentList);
+
+    if (!isAuth) {
         return <Redirect to="/login" />;
-    }    
-    
-    
-    let todoListElement = props.todoLists
-        .filter(todoList => todoList.id === props.currentList)
+    }
+
+
+    let todoListElement = todoLists
+        .filter(todoList => todoList.id === currentList)
         .map(todoList => (
             <Col key={todoList.id}>
                 <h2>Название: {todoList.title}</h2>
                 <h3>Дата создания: {new Date(todoList.addedDate).toLocaleString()}</h3>
                 <Tasks />
+                 <Tooltip title="delete">
+                    <Button type="default" shape="circle" icon={<CloseOutlined />}/>
+                </Tooltip>
             </Col>
 
         ))
     return (
         <div>
-            <Row justify={'space-around'}>
-                {todoListElement}
+            <Row className={style.todoList} justify={'space-around'}>
+                {todoListElement}               
             </Row>
             <Row justify="center">
 
-                {props.currentList ? <Form
-                    onSubmit={values => props.createTask(props.currentList, values.input)}
+                {currentList ? <Form
+                    onSubmit={values => dispatch(createTask(currentList, values.input))}
 
                     render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <label><h2>Добавить задачу</h2></label>
-                            <Field name="input" component="input" type="text" placeholder="название задачи" />
-                            <button>submit</button>
+                        <form onSubmit={handleSubmit}>                           
+                            <Field name="input" component="input">
+                                {({ input }) => (
+                                    <div>
+                                        <label>Добавить задачу</label>
+                                        <Input {...input} type="text" placeholder="название задачи" />
+                                    </div>
+                                )}
+                            </Field>
+                            <Button type="primary">submit</Button>
                         </form>
                     )}
-                /> : undefined }
+                /> : undefined}
             </Row>
             <Row justify="center">
                 <Form
-                    onSubmit={values => props.createTodoList(values.input)}
+                    onSubmit={values => dispatch(createTodoList(values.input))}
 
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <label><h2>Добавить Todo List</h2></label>
-                            <Field name="input" component="input" type="text" placeholder="название списка дел" />
-                            <button>submit</button>
+                            <Field name="input" component="input">
+                                {({ input }) => (
+                                    <div>
+                                        <label>Добавить Todo List</label>
+                                        <Input {...input} type="text" placeholder="название списка дел" />
+                                    </div>
+                                )}
+                            </Field>
+                            <Button type="primary">submit</Button>
                         </form>
                     )}
                 />
@@ -64,34 +86,5 @@ const TodoList: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => 
     )
 }
 
-const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
-    todoLists: state.todoLists.todoLists,
-    isAuth: state.auth.isAuth,
-    currentList: state.todoLists.currentList,
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        createTodoList: (todoListTitle: string) => dispatch(createTodoList(todoListTitle)),
-        loadTodoLists: () => dispatch(loadTodoLists()),
-        createTask: (todolistId: string, taskTitle: string) => dispatch(createTask(todolistId, taskTitle)),
-        getAllTasks: (todoListId: string) => dispatch(getAllTasks(todoListId))
-    }
-}
-
-type MapStatePropsType = {
-    todoLists: Array<TodoListType>
-    isAuth: boolean
-    currentList: string
-}
-
-type MapDispatchPropsType = {
-    createTodoList: (todoListTitle: string) => ActionTypes
-    loadTodoLists: () => ActionTypes
-    createTask: (todolistId: string, taskTitle: string) => ActionTypes
-    getAllTasks: (todoListId: string) => ActionTypes
-}
-
-export default connect<MapStatePropsType, MapDispatchPropsType, undefined, AppStateType>
-    (mapStateToProps, mapDispatchToProps)(TodoList);
+export default TodoList;
 
