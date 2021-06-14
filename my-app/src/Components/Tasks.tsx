@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppStateType } from '../Redux/ReduxStore';
@@ -11,11 +10,10 @@ const Tasks : React.FC = (props) => {
     const isTasksRecived = useSelector((state: AppStateType) => state.tasks.isTasksRecived)
     const currentList = useSelector((state: AppStateType) => state.todoLists.currentList)
     const tasks = useSelector((state: AppStateType) => state.tasks.tasks)
-    // eslint-disable-next-line
-    useEffect(() => {dispatch(getAllTasks(currentList))}, []); 
+    
 
     if(!isTasksRecived.includes(currentList)) {
-       
+        dispatch(getAllTasks(currentList));
         dispatch(Actions.setTasksRecived(currentList));    
     }
 

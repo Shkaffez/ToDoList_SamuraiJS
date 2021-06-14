@@ -26,10 +26,6 @@ export const todoListsAPI = {
     
 }
 
-
-
-
-
 export type TodoListType = {
     id: string
     addedDate: Date
