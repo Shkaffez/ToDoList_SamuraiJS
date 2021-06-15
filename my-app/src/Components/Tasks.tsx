@@ -21,7 +21,7 @@ const Tasks : React.FC = (props) => {
     .filter(task => task.todoListId === currentList)
     .map(task => <Task key={task.id} title={task.title} description={task.description}
         startDate={task.startDate}  deadline={task.deadline}
-        priority={task.priority}  completed={task.completed} />)
+        priority={task.priority}  completed={task.completed} taskId={task.id} />)
 
     return (
         <div>

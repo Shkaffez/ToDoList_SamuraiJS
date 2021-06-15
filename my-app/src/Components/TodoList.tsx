@@ -18,7 +18,7 @@ const TodoList: React.FC = (props) => {
     const isAuth = useSelector((state: AppStateType) => state.auth.isAuth);
     const currentList = useSelector((state: AppStateType) => state.todoLists.currentList);
 
-    const dispatchDeleteTodoList = () => dispatch(deleteTodoList(currentList))
+    const dispatchDeleteTodoList = () => dispatch(deleteTodoList(currentList));
 
     if (!isAuth) {
         return <Redirect to="/login" />;
@@ -35,7 +35,7 @@ const TodoList: React.FC = (props) => {
                     <h3>Дата создания: {new Date(todoList.addedDate).toLocaleString()}</h3>
                 </Col>
                 <Col >
-                    <Tooltip title="delete">
+                    <Tooltip title="Delete this todo list">
                         <Button onClick={dispatchDeleteTodoList} type="default" shape="circle" icon={<CloseOutlined />} />
                     </Tooltip>
                 </Col>

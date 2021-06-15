@@ -43,6 +43,7 @@ const todoListReduser = (state = initialState, action: ActionTypes) : InitialSta
         case 'TODOLISTS/REMOVE_TODOLIST': return {
             ...state, todoLists: state.todoLists.filter(todoList => todoList.id !== action.todoListId)
         }
+        
         case 'TODOLISTS/UPDATE_TITLE': 
         let todoList = state.todoLists.find(todoList => todoList.id === action.payload.todolistId);
         if(!todoList) {
@@ -57,6 +58,7 @@ const todoListReduser = (state = initialState, action: ActionTypes) : InitialSta
             ...state, todoLists: [...state.todoLists
                     .filter(todoList => todoList.id !== action.payload.todolistId), todoList]
         }
+
         case 'TODOLISTS/FETCHING_IN_PROGRESS': return {
             ...state, fetchingInProgress: true
         }

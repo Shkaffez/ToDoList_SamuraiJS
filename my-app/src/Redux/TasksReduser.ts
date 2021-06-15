@@ -11,7 +11,9 @@ export const Actions = {
     addTask: (task: TaskType) => 
     ( {type: 'TASKS/ADD_TASK', task} as const),
     setTasksRecived: (todoListId: string) => 
-    ( {type: 'TASKS/SET_TASKS_RECIVED', todoListId} as const)
+    ( {type: 'TASKS/SET_TASKS_RECIVED', todoListId} as const),
+    removeTask: (taskId: string) => 
+    ({type: 'TASKS/REMOVE_TASK', taskId} as const)
 }
 
 
@@ -42,7 +44,12 @@ const tasksReduser = (state = initialState, action: ActionTypes) : InitialStateT
             return {
                 ...state, isTasksRecived: [...state.isTasksRecived, action.todoListId]
             }
-        }   
+        } 
+        case "TASKS/REMOVE_TASK": {
+            return {
+                ...state, tasks: state.tasks.filter(task => task.id !== action.taskId)
+            }
+        }  
         default: return state
     }    
 }
@@ -63,7 +70,16 @@ export const createTask = (todolistId: string, title: string):BaseThunkType<Acti
     } else if (data.resultCode === ResultCode.Error) {
         alert(data.messages[0]);
     }
+}
 
+export const deleteTask = (todolistId: string, taskId: string): BaseThunkType<ActionTypes> => async (dispatch) => {
+    const data = await tasksAPI.deleteTask(todolistId, taskId);
+    if(data.resultCode === ResultCode.Success) {
+        dispatch(Actions.removeTask(taskId));
+    }
+    else if(data.resultCode === ResultCode.Error) {
+        alert(data.messages[0]);
+    }  
 }
 
 export default tasksReduser;
