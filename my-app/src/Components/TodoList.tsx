@@ -36,7 +36,7 @@ const TodoList: React.FC = (props) => {
                 </Col>
                 <Col >
                     <Tooltip title="Delete this todo list">
-                        <Button onClick={dispatchDeleteTodoList} type="default" shape="circle" icon={<CloseOutlined />} />
+                        <Button onClick={dispatchDeleteTodoList} htmlType="submit" type="default" shape="circle" icon={<CloseOutlined />} />
                     </Tooltip>
                 </Col>
             </Row>
@@ -86,7 +86,7 @@ const TodoList: React.FC = (props) => {
                                     </div>
                                 )}
                             </Field>
-                            <Button type="primary">submit</Button>
+                            <Button htmlType="submit" type="primary">submit</Button>
                         </form>
                     )}
                 />

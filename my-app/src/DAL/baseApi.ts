@@ -5,7 +5,7 @@ export const instance = axios.create({
     headers: {
         "API-KEY": "dca62038-4b8e-42fe-a354-95d74ec414b1"
     },
-    baseURL: "https://social-network.samuraijs.com/api/1.0/",
+    baseURL: "https://social-network.samuraijs.com/api/1.1/",
 })
 
 export enum ResultCode  {

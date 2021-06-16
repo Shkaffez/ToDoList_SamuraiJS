@@ -1,19 +1,20 @@
 import { Menu } from 'antd';
 import React from 'react';
-import { connect } from 'react-redux';
-import { TodoListType } from '../DAL/todoListsAPI';
+import {useDispatch, useSelector } from 'react-redux';
+
 import { AppStateType } from '../Redux/ReduxStore';
-import { Actions, ActionTypes, deleteTodoList } from '../Redux/TodoListReduser';
+import { Actions,  } from '../Redux/TodoListReduser';
 
 
-
-
-const NavBar : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
+const NavBar : React.FC = (props) => {
   
+  const dispatch = useDispatch();
+  const todoLists = useSelector((state: AppStateType) => state.todoLists.todoLists);
+
+  // const dispatchSetCurrentList = (e: MenuInfo) => dispatch(Actions.setCurrentList(e.key.toString()))
   
-  
-  let todoListElement = props.todoLists.map(todoList => (
-    <Menu.Item key={todoList.id} onClick={(e) =>{props.setCurrentList(e.key.toString())}}>
+  let todoListElement = todoLists.map(todoList => (
+    <Menu.Item key={todoList.id} onClick={(e) =>{dispatch(Actions.setCurrentList(e.key.toString()))}}>
           {todoList.title}
         </Menu.Item>
   )).reverse();
@@ -24,27 +25,7 @@ const NavBar : React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
   )
 }
 
-const mapStateToProps = (state: AppStateType) : MapStatePropsType => ({
-  todoLists: state.todoLists.todoLists,  
-});
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-      setCurrentList: (todoListId: string) => dispatch(Actions.setCurrentList(todoListId)),
-      deleteTodoList: (todoListId: string)=> dispatch(deleteTodoList), 
-           
-  }
-}
 
-type MapStatePropsType = {
-  todoLists: Array<TodoListType>  
-}
 
-type MapDispatchPropsType = {
-  setCurrentList: (todoListId: string) => ActionTypes
-  deleteTodoList: (todoListId: string) => ActionTypes
-  
-  
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default NavBar;
